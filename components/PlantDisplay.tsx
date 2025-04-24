@@ -7,7 +7,7 @@ const PlantDisplay = ({ frames }: { frames: any[] }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setFrameIndex((prev) => (prev + 1) % frames.length);
-    }, 600); // switch every 800ms
+    }, 10); // switch every 800ms
 
     return () => clearInterval(interval); // clean up on unmount
   }, []);

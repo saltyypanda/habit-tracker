@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import PlantDisplay from './PlantDisplay';
 import { Backgrounds } from '@/constants/Backgrounds';
+import { Animation1Frames } from '@/constants/AnimationFrames';
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,7 +39,7 @@ export default function StackedBackground() {
         style={styles.image}
         resizeMode="cover"
       />
-      <PlantDisplay frames={plantFrames} />
+      <PlantDisplay frames={Animation1Frames} />
     </View>
   );
 }
