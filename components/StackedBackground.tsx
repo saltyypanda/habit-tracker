@@ -1,15 +1,9 @@
-import React from 'react';
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
-import PlantDisplay from './PlantDisplay';
-import { Backgrounds } from '@/constants/Backgrounds';
-import { Animation1Frames } from '@/constants/AnimationFrames';
+import React from "react";
+import { View, Image, StyleSheet, Dimensions } from "react-native";
+import PlantSprite from "./PlantSprite";
+import { Backgrounds } from "@/constants/Backgrounds";
 
-const { width, height } = Dimensions.get('window');
-
-const plantFrames = [
-  require("../assets/images/round-plant-2-1.png"),
-  require("../assets/images/round-plant-2-2.png"),
-];
+const { width, height } = Dimensions.get("window");
 
 function getCurrentBackground(): any {
   const hour = new Date().getHours();
@@ -24,22 +18,18 @@ export default function StackedBackground() {
 
   return (
     <View style={styles.container}>
+      <Image source={backgroundImage} style={styles.image} resizeMode="cover" />
       <Image
-        source={backgroundImage}
+        source={require("../assets/images/wall.png")}
         style={styles.image}
         resizeMode="cover"
       />
       <Image
-        source={require('../assets/images/wall.png')}
+        source={require("../assets/images/pot.png")}
         style={styles.image}
         resizeMode="cover"
       />
-      <Image
-        source={require('../assets/images/pot.png')}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <PlantDisplay frames={Animation1Frames} />
+      <PlantSprite />
     </View>
   );
 }
@@ -48,11 +38,11 @@ const styles = StyleSheet.create({
   container: {
     width,
     height,
-    position: 'relative',
+    position: "relative",
   },
   image: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    width: "100%",
+    height: "100%",
+    position: "absolute",
   },
 });
