@@ -18,7 +18,7 @@ export const Animation1Frames = [
     require('../assets/animation-1/IMG_1648.png'),
     require('../assets/animation-1/IMG_1649.png'),
     require('../assets/animation-1/middle.png'),
-    // require('../assets/animation-1/actual_middle.png'),
-    // require('../assets/animation-1/IMG_1652.png'),
-    // require('../assets/animation-1/actual_middle.png'),
+    require('../assets/animation-1/actual_middle.png'),
+    require('../assets/animation-1/IMG_1652.png'),
+    require('../assets/animation-1/actual_middle.png'),
 ]

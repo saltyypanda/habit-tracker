@@ -1,20 +1,47 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import AnimatedSprite from 'react-native-animated-sprite';
-import { plantSprite } from '../assets/sprites/plantSprite'; // you define this object!
+import { plantSprite } from '../assets/sprites/plantSprite';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
+const spriteWidth = 1000;
+const spriteHeight = 1000;
 
 export default function PlantSprite() {
+  const [animationType, setAnimationType] = useState<'IDLE' | 'BOUNCE'>('IDLE');
+
+  const handlePress = () => {
+    if (animationType === 'IDLE') {
+      // setAnimationType('BOUNCE');
+      setTimeout(() => {
+        setAnimationType('BOUNCE');
+      }, 4);
+      setAnimationType('IDLE');
+    }
+  };
+
+  const handleAnimationFinish = () => {
+    if (animationType === 'BOUNCE') {
+      setAnimationType('IDLE');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <AnimatedSprite
+        key={animationType}
         sprite={plantSprite}
-        animationFrameIndex={plantSprite.animationIndex('IDLE')}
-        loopAnimation={true}
-        coordinates={{ top: 0, left: 0 }}
-        size={{ width: 1000, height: 1000 }}
-        onPress={() => {
-          // Switch animation to bounce here
+        animationFrameIndex={plantSprite.animationIndex(animationType)}
+        loopAnimation={animationType === 'IDLE'}
+        fps={5}
+        coordinates={{
+          top: (screenHeight / 2) - (spriteHeight / 2),
+          left: (screenWidth / 2) - (spriteWidth / 2),
         }}
+        size={{ width: spriteWidth, height: spriteHeight }}
+        // onAnimationFinish={handleAnimationFinish}
+        onPress={handlePress}
       />
     </View>
   );
@@ -22,8 +49,7 @@ export default function PlantSprite() {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    flex: 1,
+    position: 'relative',
   },
 });
