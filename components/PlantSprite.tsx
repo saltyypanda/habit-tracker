@@ -1,55 +1,42 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import AnimatedSprite from 'react-native-animated-sprite';
-import { plantSprite } from '../assets/sprites/plantSprite';
+import {
+  Skia,
+  Canvas,
+  Atlas,
+  useRectBuffer,
+  useImage,
+} from "@shopify/react-native-skia";
+import { useEffect } from "react";
+import { Dimensions } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-
-const spriteWidth = 1000;
-const spriteHeight = 1000;
+const { width, height } = Dimensions.get("window");
+const { spriteWidth, spriteHeight } = { spriteWidth: 1000, spriteHeight: 1000 }
 
 export default function PlantSprite() {
-  const [animationType, setAnimationType] = useState<'IDLE' | 'BOUNCE'>('IDLE');
+  const counter = useSharedValue(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      counter.value = (counter.value + 1) % 2;
+    }, 1000);
 
-  const handlePress = () => {
-    if (animationType === 'IDLE') {
-      // setAnimationType('BOUNCE');
-      setTimeout(() => {
-        setAnimationType('BOUNCE');
-      }, 4);
-      setAnimationType('IDLE');
-    }
-  };
+    return () => clearInterval(interval);
+  }, []);
 
-  const handleAnimationFinish = () => {
-    if (animationType === 'BOUNCE') {
-      setAnimationType('IDLE');
-    }
-  };
+  const spriteMap = useImage(require("@/assets/idle_sprite_sheet.png"));
+
+  const numberOfSprites = 1;
+  const sprites = useRectBuffer(numberOfSprites, (rect, i) => {
+    "worklet";
+    let frameSelect;
+    frameSelect = 1000 * Math.floor(counter.value);
+    rect.setXYWH(frameSelect, 0, 1000, 1000);
+  });
+
+  const transforms = [Skia.RSXform(1, 0, width / 2 - spriteWidth / 2, height / 2 - spriteHeight / 2)];
 
   return (
-    <View style={styles.container}>
-      <AnimatedSprite
-        key={animationType}
-        sprite={plantSprite}
-        animationFrameIndex={plantSprite.animationIndex(animationType)}
-        loopAnimation={animationType === 'IDLE'}
-        fps={5}
-        coordinates={{
-          top: (screenHeight / 2) - (spriteHeight / 2),
-          left: (screenWidth / 2) - (spriteWidth / 2),
-        }}
-        size={{ width: spriteWidth, height: spriteHeight }}
-        // onAnimationFinish={handleAnimationFinish}
-        onPress={handlePress}
-      />
-    </View>
+    <Canvas style={{ flex: 1 }}>
+      <Atlas image={spriteMap} sprites={sprites} transforms={transforms} />
+    </Canvas>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-  },
-});
